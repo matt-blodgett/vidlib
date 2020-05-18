@@ -46,7 +46,7 @@ let mainConfig = {
   output: {
     filename: '[name].js',
     libraryTarget: 'commonjs2',
-    path: path.join(__dirname, '../dist/electron')
+    path: path.join(__dirname, '../dist')
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin()
@@ -57,21 +57,14 @@ let mainConfig = {
   target: 'electron-main'
 }
 
-/**
- * Adjust mainConfig for development settings
- */
+
 if (process.env.NODE_ENV !== 'production') {
   mainConfig.plugins.push(
     new webpack.DefinePlugin({
       '__static': `"${path.join(__dirname, '../static').replace(/\\/g, '\\\\')}"`
     })
   )
-}
-
-/**
- * Adjust mainConfig for production settings
- */
-if (process.env.NODE_ENV === 'production') {
+} else if (process.env.NODE_ENV === 'production') {
   mainConfig.plugins.push(
     new MinifyPlugin(),
     new webpack.DefinePlugin({
